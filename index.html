@@ -1,12 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>D3 and Scalable Vector Graphics</title>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	 crossorigin="anonymous">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css" type="text/css" />
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js">
+
+	</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js">
+
+	</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.js">
+
+	</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js">
+
+	</script>
 </head>
+
 <body>
-    <h1>Hello</h1>
+
+	<div class="">
+		<div class="col-12">
+			<h2 class="text-center mt-3 mb-5">Visualising Data</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 d-flex justify-content-center">
+			<div>
+				<h4>Total Spend Per Person</h4>
+				<div id="per-person-chart"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		queue()
+            .defer(d3.json, "data/transactions.json")
+            .await(makeGraphs);
+
+        function makeGraphs(error, transactionsData) {
+            var ndx = crossfilter(transactionsData);
+            var name_dim = ndx.dimension(dc.pluck('name'))
+            var total_spend_per_person = name_dim.group().reduceSum(dc.pluck('spend'));
+            dc.barChart("#per-person-chart")
+                .width(300)
+                .height(150)
+                .margins({top: 10, right: 50, bottom: 30, left: 50})
+                .dimension(name_dim)
+                .group(total_spend_per_person)
+                .transitionDuration(500)
+                .x(d3.scale.ordinal())
+                .xUnits(dc.units.ordinal)
+                .xAxisLabel("Person")
+                .yAxis().ticks(4);
+
+            dc.renderAll();
+        }
+	</script>
+
+	<div class="row">
+		<div class="col-4 d-flex justify-content-center">
+			<div>
+				<h4>Total Spend Per Person</h4>
+				<div id="per-person-chart-pie"></div>
+			</div>
+		</div>
+
+		<div class="col-4 d-flex justify-content-center">
+			<div>
+				<h4>Total Spend Per Store</h4>
+				<div id="per-store-chart-pie"></div>
+			</div>
+		</div>
+
+		<div class="col-4 d-flex justify-content-center">
+			<div>
+				<h4>Total Spend Per State</h4>
+				<div id="per-state-chart-pie"></div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<script>
+		queue()
+            .defer(d3.json, "data/transactions.json")
+            .await(makeGraphs);
+
+        function makeGraphs(error, transactionsData) {
+            var ndx = crossfilter(transactionsData);
+            var name_dim = ndx.dimension(dc.pluck('name'));
+            var total_spend_per_person = name_dim.group().reduceSum(dc.pluck('spend'));
+            dc.pieChart('#per-person-chart-pie')
+                .height(330)
+                .radius(90)
+                .transitionDuration(1500)
+                .dimension(name_dim)
+                .group(total_spend_per_person);
+
+            var store_dim = ndx.dimension(dc.pluck('store'));
+            var total_spend_per_store = store_dim.group().reduceSum(dc.pluck('spend'));
+            dc.pieChart('#per-store-chart-pie')
+                .height(330)
+                .radius(90)
+                .transitionDuration(1500)
+                .dimension(store_dim)
+                .group(total_spend_per_store);
+
+            var state_dim = ndx.dimension(dc.pluck('state'));
+            var total_spend_per_state = state_dim.group().reduceSum(dc.pluck('spend'));
+            dc.pieChart('#per-state-chart-pie')
+                .height(330)
+                .radius(90)
+                .transitionDuration(1500)
+                .dimension(state_dim)
+                .group(total_spend_per_state);
+
+            dc.renderAll();
+        }
+	</script>
+
+	<div class="row">
+		<div class="col-12 d-flex justify-content-center">
+			<div>
+				<h3>Total Spend Per Month</h3>
+				<div id="chart-here-line"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		queue()
+        .defer(d3.json, "data/transactions.json")
+        .await(makeGraphs);
+    function makeGraphs(error, transactionsData) {
+        var ndx = crossfilter(transactionsData);
+        var parseDate = d3.time.format("%d/%m/%Y").parse;
+        transactionsData.forEach(function(d){
+            d.date = parseDate(d.date);
+        });
+        var date_dim = ndx.dimension(dc.pluck('date'));
+        var total_spend_per_date = date_dim.group().reduceSum(dc.pluck('spend'));
+        var minDate = date_dim.bottom(1)[0].date;
+        var maxDate = date_dim.top(1)[0].date;
+        dc.lineChart("#chart-here-line")
+            .width(1000)
+            .height(300)
+            .margins({top: 10, right: 50, bottom: 30, left: 50})
+            .dimension(date_dim)
+            .group(total_spend_per_date)
+            .transitionDuration(500)
+            .x(d3.time.scale().domain([minDate,maxDate]))
+            .xAxisLabel("Month")
+            .yAxis().ticks(4);
+        dc.renderAll();
+    }
+	</script>
+
+	<div class="row">
+		<div class="col-12 d-flex justify-content-center">
+			<div>
+				<h3>Spent Per Month Per Person</h3>
+				<div id="composite-chart"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		queue()
+        .defer(d3.json, "data/transactions.json")
+        .await(makeGraphs);
+    function makeGraphs(error, transactionsData) {
+        var ndx = crossfilter(transactionsData);
+        var parseDate = d3.time.format("%d/%m/%Y").parse;
+        transactionsData.forEach(function(d){
+            d.date = parseDate(d.date);
+        });
+        var date_dim = ndx.dimension(dc.pluck('date'));
+        var minDate = date_dim.bottom(1)[0].date;
+        var maxDate = date_dim.top(1)[0].date;
+        function spend_by_name(name) {
+            return function(d) {
+                if (d.name === name) {
+                    return +d.spend;
+                } else {
+                    return 0;
+                }
+            }
+        }
+        var tomSpendByMonth = date_dim.group().reduceSum(spend_by_name('Tom'));
+        var bobSpendByMonth = date_dim.group().reduceSum(spend_by_name('Bob'));
+
+        var aliceSpendByMonth = date_dim.group().reduceSum(spend_by_name('Alice'));
+        var compositeChart = dc.compositeChart('#composite-chart');
+        compositeChart
+            .width(990)
+            .height(200)
+            .dimension(date_dim)
+            .x(d3.time.scale().domain([minDate, maxDate]))
+            .yAxisLabel("Spend")
+            .legend(dc.legend().x(80).y(20).itemHeight(13).gap(5))
+            .renderHorizontalGridLines(true)
+            .compose([
+                dc.lineChart(compositeChart)
+                    .colors('green')
+                    .group(tomSpendByMonth, 'Tom'),
+                dc.lineChart(compositeChart)
+                    .colors('red')
+                    .group(bobSpendByMonth, 'Bob'),
+                dc.lineChart(compositeChart)
+                    .colors('blue')
+                    .group(aliceSpendByMonth, 'Alice')
+            ])
+            .brushOn(false)
+            .render();
+        dc.renderAll();
+    }
+	</script>
+
+
+	<div class="row">
+		<div class="col-12 d-flex justify-content-center">
+			<div>
+				<h3>Total Spend Per Person Broken Down By Store</h3>
+				<div id="stacked-chart"></div>
+			</div>
+		</div>
+	</div>
+	<script>
+		queue()
+        .defer(d3.json, "data/transactions.json")
+        .await(makeGraphs);
+    function makeGraphs(error, transactionsData) {
+        var ndx = crossfilter(transactionsData);
+        var name_dim = ndx.dimension(dc.pluck('name'));
+        var spendByNameStoreA = name_dim.group().reduceSum(function (d) {
+            if (d.store === 'A') {
+                return +d.spend;
+            } else {
+                return 0;
+            }
+        });
+        var spendByNameStoreB = name_dim.group().reduceSum(function (d) {
+            if (d.store === 'B') {
+                return +d.spend;
+            } else {
+                return 0;
+            }
+        });
+        var stackedChart = dc.barChart("#stacked-chart");
+        stackedChart
+            .width(500)
+            .height(500)
+            .dimension(name_dim)
+            .group(spendByNameStoreA, "Store A")
+            .stack(spendByNameStoreB, "Store B")
+            .x(d3.scale.ordinal())
+            .xUnits(dc.units.ordinal)
+            .legend(dc.legend().x(420).y(0).itemHeight(15).gap(5));
+        stackedChart.margins().right = 100;
+        dc.renderAll();
+    }
+	</script>
+
 </body>
+
 </html>
