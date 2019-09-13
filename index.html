@@ -34,7 +34,7 @@
 
 	<div class="row m-0 p-0">
 		<div class="col-12 m-0 p-0">
-			<p>We wil be using d3.min.css to create these charts, d3.min.css isn't only for charts it's a graphs library and you can
+			<p>We wil be using dc.min.css to create these charts, dc.min.css isn't only for charts it's a graphs library and you can
 				create cartoons using it. There is a chart library called d3.min.js this uses d3.min.css to render charts. Crossfilter
 				allows you to interact with the data rendered by d3 and will change the charts related to that piece of data. </p>
 			<dl>
@@ -67,29 +67,29 @@
 	<h4 class="text-secondary mb-5">Using Internal Data</h4>
 
 	<div class="row m-0 p-0">
-		<div class="col-6 p-0 m-0">
+		<div class="col-sm-12 col-lg-6 p-0 m-0">
 			<img src="assets/images/bar-charts-internal-data.png" height="100%">
         </div>
-        <div class="col-6 p-3 m-0">
+        <div class="col-sm-12 col-lg-6 p-3 m-0">
             <P>Crossfilter allows you to work with data using whats called two way binding <span class="text-danger">var ndx = crossfilter(transactionsData);</span> </P>
             <p> We use dc to <span class="text-danger">pluck()</span> data from our data set.</p>
         </div>
     </div>
 
 	<div class="row m-0 p-0 my-5">
-		<div class="col-4 d-flex justify-content-center">
+		<div class="col-lg-4 col-sm-6 d-flex justify-content-center">
 			<div>
 				<h3>Total Spend Per Person</h3>
 				<div id="per-person-chart"></div>
 			</div>
 		</div>
-		<div class="col-4 d-flex justify-content-center">
+		<div class="col-lg-4 col-sm-6 d-flex justify-content-center">
 			<div>
 				<h3>Total Spend Per Store</h3>
 				<div id="per-store-chart"></div>
 			</div>
 		</div>
-		<div class="col-4 d-flex justify-content-center">
+		<div class="col-lg-4 col-sm-12 d-flex justify-content-center">
 			<div>
 				<h3>Total Spend Per State</h3>
 				<div id="per-state-chart"></div>
@@ -162,10 +162,10 @@
     <h2 class="mt-3 mb-5">Pie Charts</h2>
 
     <div class="row m-0 p-0">
-        <div class="col-6 p-0 m-0">
+        <div class="col-lg-6 col-sm-12 p-0 m-0">
             <img src="assets/images/d3-code-pie-charts.png" height="100%">
         </div>
-        <div class="col-6 p-3 m-0">
+        <div class="col-lg-6 col-sm-12 p-3 m-0">
             <p>We start with <span class="text-danger">queue()</span> because this refers to the CDN queue.</p>
             <p class="text-success"><span><</span>script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/3.0.7/d3-queue.min.js"><span><</span>/script></p>
             <p>This allows us to defer calling a function until the data is ready, we are defering json content and the location of that file in the parameter</p>
@@ -174,21 +174,21 @@
     </div>
 
 	<div class="row my-5">
-		<div class="col-4 d-flex justify-content-center">
+		<div class="col-lg-4 col-sm-6 d-flex justify-content-center">
 			<div>
 				<h4>Total Spend Per Person</h4>
 				<div id="per-person-chart-pie"></div>
 			</div>
 		</div>
 
-		<div class="col-4 d-flex justify-content-center">
+		<div class="col-lg-4 col-sm-6 d-flex justify-content-center">
 			<div>
 				<h4>Total Spend Per Store</h4>
 				<div id="per-store-chart-pie"></div>
 			</div>
 		</div>
 
-		<div class="col-4 d-flex justify-content-center">
+		<div class="col-lg-4 col-sm-12 d-flex justify-content-center">
 			<div>
 				<h4>Total Spend Per State</h4>
 				<div id="per-state-chart-pie"></div>
@@ -235,6 +235,8 @@
 	</script>
 
     <h2 class="mt-3 mb-5">Line Chart</h2>
+
+    <p>Best to show progresstion over time.</p>
 
 	<div class="row my-5">
 		<div class="col-12 d-flex justify-content-center">
