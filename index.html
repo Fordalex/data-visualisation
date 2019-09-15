@@ -34,16 +34,16 @@
 
 	<div class="row m-0 p-0">
 		<div class="col-12 m-0 p-0">
-			<p>We wil be using dc.min.css to create these charts, dc.min.css isn't only for charts it's a graphs library and you can
-				create cartoons using it. There is a chart library called d3.min.js this uses d3.min.css to render charts. Crossfilter
-				allows you to interact with the data rendered by d3 and will change the charts related to that piece of data. </p>
+			<p>D3 is a graphics library not only for charts. DC (Dimensional Charting) this sits on top on d3 and uses d3 to create
+				charts. Another CDN is crossfilter we use this to visualise different pieces of information from our data and make it
+				more interactive.</p>
 			<dl>
 				<dt>DC.min.css</dt>
 				<dd class="link"><span>
                             <</span>link rel="stylesheet"
                                 href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css" type="text/css" />
                     </dd>
-                    <dt>D3</dt>
+                    <dt>D3.min.js</dt>
                     <dd class="link"><span>
                             <</span>script type="text/javascript"
                                 src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js">
@@ -60,6 +60,34 @@
                                 <span><span>/script></span>
             </dl>
              <p>It's important they go in the head of your html in this order.</p>
+        </div>
+    </div>
+
+    <div class="row m-0 p-0">
+        <div class="col-12 m-0 p-0">
+            <h3 class="text-center my-5">Methods we'll use</h3>
+        </div>
+        <div class="col-4">
+            <h4>DC (Dimensional Charting)</h4>
+            <ul>
+                <li>dc.<span class="text-danger">pluck()</span> This method is used to get information from our data.</li>
+                <li><span class="text-danger">group()</span> Used to group a dimension together.</li>
+                <li><span class="text-danger">reduceSum('spend') Is then used to show the data</span> </li>
+            </ul>
+        </div>
+        <div class="col-4">
+            <h4>D3 (The graphics library)</h4>
+            <ul>
+                <li></li>
+            </ul>
+        </div>
+        <div class="col-4">
+            <h4>Crossfilter</h4>
+            <ul>
+                <li><span class="text-danger">crossfilter(variable name)</span> This is used to make sure that the data can be used to influence more than one data.</li>
+                <li><span class="text-danger">dimension()</span> Tells the computer what we aree wanting to pluck... what data information to display.</li>
+                <li>^^ Normally shown as <span class="text-danger">dimension(dc.pluck('name'))</span></li>
+            </ul>
         </div>
     </div>
 
